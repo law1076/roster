@@ -168,12 +168,8 @@ App = {
       }
     ]
 
-    contractAddress = '0xf423A8858413c8f1d2dba5666B6236F4d4Ef5f85'
-
     const roster = await $.getJSON('Roster.json')
     App.contracts.Roster = TruffleContract(roster)
-    var rosterABI = web3.eth.contract(abiArray)
-    var rosterCode = rosterABI.at(contractAddress);
     App.contracts.Roster.setProvider(App.web3Provider)
     App.roster = await App.contracts.Roster.deployed()
     //App.roster = rosterCode
@@ -224,13 +220,6 @@ App = {
     App.setLoading(true)
     const content = $('#newName').val()
     await App.roster.createStudent(content)
-    window.location.reload()
-  },
-
-  toggleCompleted: async (e) => {
-    App.setLoading(true)
-    const studentId = e.target.name
-    await App.roster.toggleCompleted(studentId)
     window.location.reload()
   },
 
