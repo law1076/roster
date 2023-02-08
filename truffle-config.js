@@ -69,7 +69,7 @@ module.exports = {
       skipDryRun: true,
       chainId: 137,
       gas: 6600000,
-      gasPrice: 600000000000,
+      gasPrice: 300000000000,
           }
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
