@@ -6,20 +6,13 @@ contract Roster {
   struct Student {
     uint id;
     string content;
-    bool completed;
   }
 
   mapping(uint => Student) public students;
 
   event StudentCreated(
     uint id,
-    string content,
-    bool completed
-  );
-
-  event StudentCompleted(
-    uint id,
-    bool completed
+    string content
   );
 
   constructor() public {
@@ -28,15 +21,9 @@ contract Roster {
 
   function createStudent(string memory _content) public {
     studentCount ++;
-    students[studentCount] = Student(studentCount, _content, false);
-    emit StudentCreated(studentCount, _content, false);
+    students[studentCount] = Student(studentCount, _content);
+    emit StudentCreated(studentCount, _content);
   }
 
-  function toggleCompleted(uint _id) public {
-    Student memory _student = students[_id];
-    _student.completed = !_student.completed;
-    students[_id] = _student;
-    emit StudentCompleted(_id, _student.completed);
-  }
 
 }
