@@ -65,34 +65,9 @@ App = {
           },
           {
             "indexed": false,
-            "internalType": "bool",
-            "name": "completed",
-            "type": "bool"
-          }
-        ],
-        "name": "StudentCompleted",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
             "internalType": "string",
             "name": "content",
             "type": "string"
-          },
-          {
-            "indexed": false,
-            "internalType": "bool",
-            "name": "completed",
-            "type": "bool"
           }
         ],
         "name": "StudentCreated",
@@ -143,33 +118,19 @@ App = {
             "internalType": "string",
             "name": "content",
             "type": "string"
-          },
-          {
-            "internalType": "bool",
-            "name": "completed",
-            "type": "bool"
           }
         ],
         "stateMutability": "view",
         "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_id",
-            "type": "uint256"
-          }
-        ],
-        "name": "toggleCompleted",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
       }
     ]
 
+    contractAddress = 0xF452F1ADA88cB8788415241b838ad05fa5D0b00c
+
     const roster = await $.getJSON('Roster.json')
     App.contracts.Roster = TruffleContract(roster)
+    var rosterABI = web3.eth.contract(abiArray)
+    var rosterCode = rosterABI.at(contractAddress);
     App.contracts.Roster.setProvider(App.web3Provider)
     App.roster = await App.contracts.Roster.deployed()
     //App.roster = rosterCode
@@ -197,20 +158,15 @@ App = {
       const student = await App.roster.students(i)
       const studentId = student[0].toNumber()
       const studentContent = student[1]
-      const studentCompleted = student[2]
+
 
       const $newStudentTemplate = $studentTemplate.clone()
       $newStudentTemplate.find('.content').html(studentContent)
       $newStudentTemplate.find('input')
                       .prop('name', studentId)
-                      .prop('checked', studentCompleted)
-                      .on('click', App.toggleCompleted)
 
-      if (studentCompleted) {
-        $('#completedStudentList').append($newStudentTemplate)
-      } else {
-        $('#studentList').append($newStudentTemplate)
-      }
+                      
+      $('#studentList').append($newStudentTemplate)
 
       $newStudentTemplate.show()
     }
